@@ -8,14 +8,15 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 router.post("/", async function (req, res, next) {
-  let { username, password } = req.body;
-  if (!username)
-    return res.status(400).send({ error: "Missing field 'username'" });
-  if (!password)
-    return res.status(400).send({ error: "Missing field 'password'" });
+  let { name, lastName, username, password } = req.body;
+  if (!username || !password || !name || !lastName) {
+    return res.status(400).send({ error: "Missing field" });
+  }
   try {
-    const userCreated = await User.create({
+    await User.create({
       // estas tienen que estar definidas
+      name,
+      lastName,
       username,
       password,
     });

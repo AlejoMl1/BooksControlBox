@@ -18,7 +18,7 @@ const SignIn = () => {
     }));
     setUsernameExistsError(false); // Reset the error when input changes
   };
-
+  const isButtonDisabled = formData.username === "" || formData.password === "";
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log("Form submitted with data:", formData);
@@ -75,7 +75,11 @@ const SignIn = () => {
               className="form-control"
             />
           </div>
-          <button className="btn btn-primary mb-3" type="submit">
+          <button
+            className="btn btn-primary mb-3"
+            type="submit"
+            disabled={isButtonDisabled}
+          >
             Create new user
           </button>
         </form>
