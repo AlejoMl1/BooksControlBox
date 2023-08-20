@@ -1,31 +1,29 @@
 import { React, useState } from "react";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Login from "./components/Login";
 import SignIn from "./components/SignIn";
-import NavBar from "./components/Navbar";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
 function App() {
-  const [showLogInForm, setShowLogInForm] = useState(false);
-  const [showSignUpForm, setShowSignUpForm] = useState(false);
+  // const navigate = useNavigate();
 
-  const handleLogInClick = () => {
-    setShowLogInForm(true);
-    setShowSignUpForm(false);
-  };
+  // const handleLogInClick = () => {
+  //   navigate("/login");
+  // };
 
-  const handleSignUpClick = () => {
-    setShowSignUpForm(true);
-    setShowLogInForm(false);
-  };
+  // const handleSignUpClick = () => {
+  //   navigate("/signup");
+  // };
   return (
-    <>
-      <NavBar
-        onLogInClick={handleLogInClick}
-        onSignUpClick={handleSignUpClick}
-      />
-      {showLogInForm && <Login />}
-      {showSignUpForm && <SignIn />}
-      <div className="container"></div>
-    </>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignIn />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

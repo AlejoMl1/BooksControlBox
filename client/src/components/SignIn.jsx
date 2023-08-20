@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { URL_POST_USER } from "../assets/constants";
-
+import "./SignIn.css";
 const SignIn = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    name: "",
+    lastName: "",
   });
 
   const [usernameExistsError, setUsernameExistsError] = useState(false);
@@ -18,7 +20,11 @@ const SignIn = () => {
     }));
     setUsernameExistsError(false); // Reset the error when input changes
   };
-  const isButtonDisabled = formData.username === "" || formData.password === "";
+  const isButtonDisabled =
+    formData.username === "" ||
+    formData.password === "" ||
+    formData.name === "" ||
+    formData.lastName === "";
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log("Form submitted with data:", formData);
@@ -36,12 +42,38 @@ const SignIn = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div className="container-fluid d-flex justify-content-center align-items-center main">
       <div className="row">
         <h3>Sign Up!</h3>
         <p>It's quick and easy.</p>
         <form onSubmit={handleSubmit}>
           <div className={`mb-3 ${usernameExistsError ? "has-error" : ""}`}>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Name:
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Last Name:
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                className="form-control"
+              />
+            </div>
             <label htmlFor="username" className="form-label">
               Username:
             </label>
@@ -75,6 +107,7 @@ const SignIn = () => {
               className="form-control"
             />
           </div>
+
           <button
             className="btn btn-primary mb-3"
             type="submit"

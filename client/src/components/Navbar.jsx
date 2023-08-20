@@ -1,13 +1,14 @@
 import React from "react";
-import Login from "./Login";
-import SignIn from "./SignIn";
-const NavBar = ({ onLogInClick, onSignUpClick }) => {
+import { Outlet, Link } from "react-router-dom";
+
+const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           Books ControlBox
-        </a>
+        </Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -25,14 +26,14 @@ const NavBar = ({ onLogInClick, onSignUpClick }) => {
         >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#login" onClick={onLogInClick}>
+              <Link className="nav-link" to="/login">
                 Log In
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#signup" onClick={onSignUpClick}>
-                Sign Up
-              </a>
+              <Link className="nav-link" to="/signup">
+                Sign Up{" "}
+              </Link>
             </li>
           </ul>
         </div>

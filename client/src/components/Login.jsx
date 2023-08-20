@@ -22,37 +22,41 @@ const Login = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">
-            Username:
-          </label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password:
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-        </div>
-        <button className="btn btn-primary mb-3" type="submit">
-          Log in
-        </button>
-      </form>
+      <div className="row">
+        <h1 className="mb-4">Log in</h1>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Username:
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="form-control"
+            />
+          </div>
+          <button className="btn btn-primary mt-3" type="submit">
+            Log in
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
