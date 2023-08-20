@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { URL_POST_USER } from "../assets/constants";
+import { URL_POST_USER_SIGNUP } from "../assets/constants";
+import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
 const SignIn = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -29,15 +31,12 @@ const SignIn = () => {
     event.preventDefault();
     // console.log("Form submitted with data:", formData);
     try {
-      const response = await axios.post(URL_POST_USER, formData);
-      console.log("the response of post is:", response);
+      const response = await axios.post(URL_POST_USER_SIGNUP, formData);
+      navigate("/");
     } catch (error) {
       if (error.response.status === 400) {
         setUsernameExistsError(true);
       }
-      console.log("error structure", error);
-      // console.error("An error occurred:", error);
-      // Handle errors that occur during the POST request.
     }
   };
 

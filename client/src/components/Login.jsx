@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-
+import { URL_POST_USER_LOGIN } from "../assets/constants";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -14,14 +17,19 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submitted with data:", formData);
-    // You can perform further actions like sending data to a server here
+    try {
+      const response = await axios.post(URL_POST_USER_LOGIN, formData);
+      navigate("/");
+    } catch (error) {}
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "90vh" }}
+    >
       <div className="row">
         <h1 className="mb-4">Log in</h1>
 
