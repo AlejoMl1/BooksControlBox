@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios,{AxiosError} from "axios";
 import React, { useState } from "react";
 import { URL_POST_USER_SIGNUP } from "../assets/constants";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const SignIn = () => {
 
   const [usernameExistsError, setUsernameExistsError] = useState(false);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event:React.ChangeEvent<HTMLInputElement>):void => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -22,18 +22,18 @@ const SignIn = () => {
     }));
     setUsernameExistsError(false); // Reset the error when input changes
   };
-  const isButtonDisabled =
+  const isButtonDisabled :boolean=
     formData.username === "" ||
     formData.password === "" ||
     formData.name === "" ||
     formData.lastName === "";
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event:React.FormEvent):Promise< void> => {
     event.preventDefault();
     // console.log("Form submitted with data:", formData);
     try {
       const response = await axios.post(URL_POST_USER_SIGNUP, formData);
       navigate("/");
-    } catch (error) {
+    } catch (error:AxiosError|any) {
       if (error.response.status === 400) {
         setUsernameExistsError(true);
       }
