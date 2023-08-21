@@ -7,6 +7,7 @@ const objectSequelize = {
   logging: false,
   native: false,
 };
+//*both ways works the connection
 // export default new Sequelize({
 //   dialect: "postgres",
 //   host: DB_HOST,

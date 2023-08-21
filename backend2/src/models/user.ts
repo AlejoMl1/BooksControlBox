@@ -6,7 +6,7 @@ export default class User extends Model {
   public username?: string;
   public password?: string;
 }
-export const UserMap = (sequelize: Sequelize) => {
+export const UserModel = (sequelize: Sequelize) => {
   User.init(
     {
       id: {

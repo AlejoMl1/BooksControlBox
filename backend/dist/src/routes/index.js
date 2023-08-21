@@ -9,5 +9,5 @@ require("dotenv").config();
 // Ejemplo: const authRouter = require('./auth.js');
 const router = Router();
 router.use("/user", user);
-// exports.default = router;
-module.exports = router;
+exports.default = router;
+// module.exports = router;

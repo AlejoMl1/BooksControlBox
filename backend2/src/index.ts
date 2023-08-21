@@ -2,11 +2,12 @@ import http from "http";
 import { API_PORT } from "./config";
 import express from "express";
 import bodyParser from "body-parser";
-import usersRoutes from "./routes/user";
+import router from "./routes/index";
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const app = express();
 import { CORS_URL } from "./config";
+import sequelize from "./database";
 
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -31,9 +32,16 @@ app.use((req, res, next) => {
   //the execution has to continue
   next();
 });
-app.use("/user", usersRoutes);
+
+app.use("/", router);
 
 const server = http.createServer(app);
-server.listen(API_PORT, () => {
-  console.log(`API started at http://localhost:${API_PORT}`);
+// server.listen(API_PORT, () => {
+//   console.log(`API started at http://localhost:${API_PORT}`);
+// });
+
+sequelize.sync({ force: false }).then(() => {
+  server.listen(API_PORT, () => {
+    console.log(`API started at http://localhost:${API_PORT}`);
+  });
 });
