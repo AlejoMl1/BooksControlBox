@@ -2,8 +2,8 @@ import axios,{AxiosError} from "axios";
 import React, { useState } from "react";
 import { URL_POST_USER_SIGNUP } from "../assets/constants";
 import { useNavigate } from "react-router-dom";
-import "./SignIn.css";
-const SignIn = () => {
+import "./SignUp.css";
+const SignUP = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -120,4 +120,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUP;

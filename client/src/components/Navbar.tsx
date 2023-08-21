@@ -1,7 +1,16 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector,useDispatch } from 'react-redux';
+import { RootState } from "../redux/store";
+import { removeUsername } from "../redux/userSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const username = useSelector((state: RootState) => state.user.username);
+
+  const handleLogout = () => {
+      dispatch(removeUsername());
+  };
+
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <div className="container-fluid">
@@ -26,15 +35,31 @@ const NavBar = () => {
         >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Log In
-              </Link>
+              <div className="d-flex align-items-center"> {/* Use flex display */}
+                {username && (
+                  <>
+                    <p className="nav-link text-white mb-0">Welcome {username}</p>
+                    <a className="nav-link" onClick={handleLogout}>
+                      Log Out
+                    </a>
+                  </>
+                )}
+              </div>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/signup">
-                Sign Up
-              </Link>
-            </li>
+            {!username && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Log In
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signup">
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

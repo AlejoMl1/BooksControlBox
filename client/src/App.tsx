@@ -1,8 +1,7 @@
-import React ,{ useState } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 import "./App.css";
 import Login from "./components/Login";
-import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 
@@ -13,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignIn />} />  
+        <Route path="/signup" element={<SignUp />} />  
       </Routes>
     </BrowserRouter>
   );

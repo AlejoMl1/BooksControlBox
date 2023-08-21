@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
 import User, { UserModel } from "../models/user";
-import database from "../database";
+import sequelize from "../database";
 
 const router = Router();
-
+const database = sequelize;
 router.post("/signup", async function (req: Request, res: Response) {
   UserModel(database);
   let { name, lastName, username, password } = req.body;

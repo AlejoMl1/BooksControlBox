@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { URL_POST_USER_LOGIN } from "../assets/constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUsername } from "../redux/userSlice";
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [loginError, setLoginError] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -15,14 +19,20 @@ const Login = () => {
       ...prevData,
       [name]: value,
     }));
+
+    // Clear loginError when input fields are changed
+    setLoginError(false);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post(URL_POST_USER_LOGIN, formData);
+      await axios.post(URL_POST_USER_LOGIN, formData);
+      dispatch(addUsername(formData.username));
       navigate("/");
-    } catch (error) {}
+    } catch (error) {
+      setLoginError(true);
+    }
   };
 
   return (
@@ -44,7 +54,7 @@ const Login = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="form-control"
+              className={`form-control ${loginError ? "is-invalid" : ""}`}
             />
           </div>
           <div className="mb-3">
@@ -57,8 +67,11 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="form-control"
+              className={`form-control ${loginError ? "is-invalid" : ""}`}
             />
+            {loginError && (
+              <div className="invalid-feedback">Please check your credentials</div>
+            )}
           </div>
           <button className="btn btn-primary mt-3" type="submit">
             Log in
