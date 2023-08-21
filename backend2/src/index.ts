@@ -5,13 +5,12 @@ import bodyParser from "body-parser";
 import router from "./routes/index";
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-const app = express();
 import { CORS_URL } from "./config";
 import sequelize from "./database";
 
+const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
-
 app.use(cookieParser());
 //print in the console every time exists a request
 app.use(morgan("dev"));

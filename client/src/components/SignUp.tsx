@@ -2,8 +2,11 @@ import axios,{AxiosError} from "axios";
 import React, { useState } from "react";
 import { URL_POST_USER_SIGNUP } from "../assets/constants";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUsername } from "../redux/userSlice";
 import "./SignUp.css";
 const SignUP = () => {
+   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -29,9 +32,9 @@ const SignUP = () => {
     formData.lastName === "";
   const handleSubmit = async (event:React.FormEvent):Promise< void> => {
     event.preventDefault();
-    // console.log("Form submitted with data:", formData);
     try {
       const response = await axios.post(URL_POST_USER_SIGNUP, formData);
+      dispatch(addUsername(formData.username));
       navigate("/");
     } catch (error:AxiosError|any) {
       if (error.response.status === 400) {
