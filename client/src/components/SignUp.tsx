@@ -23,7 +23,7 @@ const SignUP = () => {
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   const [formData, setFormData] = useState({
     username: "",
