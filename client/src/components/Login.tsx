@@ -3,7 +3,7 @@ import { URL_POST_USER_LOGIN } from "../assets/constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addUsername } from "../redux/userSlice";
+import { addUserCredentials } from "../redux/userSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,9 +27,11 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await axios.post(URL_POST_USER_LOGIN, formData);
-      dispatch(addUsername(formData.username));
-      navigate("/");
+      const response= await axios.post(URL_POST_USER_LOGIN, formData);
+      console.log("response",response);
+      const userCredentials = { userUuid:response.data.data.userUuid, username:response.data.data.username};
+      dispatch(addUserCredentials(userCredentials));
+      navigate("/home");
     } catch (error) {
       setLoginError(true);
     }

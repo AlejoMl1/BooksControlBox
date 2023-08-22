@@ -2,12 +2,17 @@ import React,{useState} from "react";
 import './Home.css';
 import axios from "axios";
 import Card from "./Card";
+import { useSelector } from 'react-redux';
+import { RootState } from "../redux/store";
+import { URL_GET_SEARCH_BY_TITLE } from "../assets/constants";
 export default function Home() {
+  const username = useSelector((state: RootState) => state.user.username);
+  const catalog = useSelector((state: RootState) => state.books.catalog);
   const [search,setSearch]= useState("");
   const searchBook = async (search: string)=>{
     console.log("enter the search function, the value is:",search);
-    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=python&key=AIzaSyDEZKQOwi0v0GSOwIt7NpVdMZOivoLXv6Ii`);
-    console.log(response);
+    const response = await axios.get(`${URL_GET_SEARCH_BY_TITLE}${search}`);
+    console.log("response in home",response.data);
   }
 
    const cardsInfo= [
@@ -57,9 +62,11 @@ export default function Home() {
     imageLink: "http://books.google.com/books/content?id=6unYzQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
   }
    ]
-  return (
+  return ( 
   <div className="container-fluid">
-      <div id="title" className="center">
+    {username ? (<>
+    
+     <div id="title" className="center">
         <div className="row pt-5 col-lg-6 col-md-9 col-sm-10 mx-auto">
           <div id="input" className="input-group mx-auto">
             <input 
@@ -84,6 +91,16 @@ export default function Home() {
           ))}
         </div>
       </div>
+    
+    </>):<>  
+     <div id="title" className="center text-center mt-5">
+      <h2>Please Log in or Sign Up to view the catalog of books</h2>
+    </div>
+      </>
+
+  
+  }
+     
     </div>
   );
     

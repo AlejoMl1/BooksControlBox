@@ -1,19 +1,39 @@
 import axios,{AxiosError} from "axios";
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { URL_POST_USER_SIGNUP } from "../assets/constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addUsername } from "../redux/userSlice";
+import { addUserCredentials } from "../redux/userSlice";
+import { loadCatalog } from "../redux/booksSlice";
+import  { URL_GET_BOOKS} from "../assets/constants"
 import "./SignUp.css";
 const SignUP = () => {
    const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(URL_GET_BOOKS);
+        const fetchedBooks = response.data.data;
+        console.log("Fetched books", fetchedBooks);
+        dispatch(loadCatalog(fetchedBooks));
+      } catch (error) {
+         console.log(error);
+         throw error;
+      }
+    };
+    fetchData();
+  },[dispatch]);
+
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     name: "",
     lastName: "",
   });
+
+
 
   const [usernameExistsError, setUsernameExistsError] = useState(false);
 
@@ -34,8 +54,9 @@ const SignUP = () => {
     event.preventDefault();
     try {
       const response = await axios.post(URL_POST_USER_SIGNUP, formData);
-      dispatch(addUsername(formData.username));
-      navigate("/");
+       const userCredentials = { userUuid:response.data.data.userUuid, username:response.data.data.username};
+      dispatch(addUserCredentials(userCredentials));
+      navigate("/home");
     } catch (error:AxiosError|any) {
       if (error.response.status === 400) {
         setUsernameExistsError(true);

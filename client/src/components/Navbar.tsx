@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from "../redux/store";
-import { removeUsername } from "../redux/userSlice";
+import { removeUserCredentials } from "../redux/userSlice";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const username = useSelector((state: RootState) => state.user.username);
 
   const handleLogout = () => {
-      dispatch(removeUsername());
+      dispatch(removeUserCredentials());
   };
 
   return (
@@ -39,9 +39,9 @@ const NavBar = () => {
                 {username && (
                   <>
                     <p className="nav-link text-white mb-0">Welcome {username}</p>
-                    <a className="nav-link" onClick={handleLogout}>
+                    <Link className="nav-link" onClick={handleLogout} to="/login">
                       Log Out
-                    </a>
+                    </Link>
                   </>
                 )}
               </div>

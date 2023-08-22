@@ -17,7 +17,7 @@ router.post("/signup", async function (req: Request, res: Response) {
     });
 
     return res.status(201).send({
-      data: { userUuid: newUser.userUuid },
+      data: { userUuid: newUser.userUuid, username: newUser.username },
       msg: "User created successfully",
     });
   } catch (err: any) {
@@ -45,6 +45,7 @@ router.post("/login", async function (req: Request, res: Response) {
             userUuid: userData.dataValues.userUuid,
             name: userData.dataValues.name,
             lastName: userData.dataValues.lastName,
+            username: userData.dataValues.username,
           },
         })
       : res.status(401).send({ msg: "Username or password doesn't match" });
