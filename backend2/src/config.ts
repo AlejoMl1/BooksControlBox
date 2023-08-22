@@ -7,3 +7,4 @@ export const DB_HOST = String(process.env.DB_HOST);
 export const DB_PORT = Number(process.env.DB_PORT);
 export const API_PORT = Number(process.env.API_PORT);
 export const CORS_URL = String(process.env.CORS_URL);
+export const GOOGLE_API_KEY = String(process.env.GOOGLE_API_KEY);

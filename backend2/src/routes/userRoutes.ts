@@ -1,11 +1,10 @@
 import { Router, Request, Response } from "express";
-import User, { UserModel } from "../models/user";
+import User from "../models/User";
 import sequelize from "../database";
 
 const router = Router();
 const database = sequelize;
 router.post("/signup", async function (req: Request, res: Response) {
-  UserModel(database);
   let { name, lastName, username, password } = req.body;
   if (!username || !password || !name || !lastName) {
     return res.status(400).send({ error: "Missing field" });
@@ -30,7 +29,6 @@ router.post("/signup", async function (req: Request, res: Response) {
 });
 
 router.post("/login", async function (req: Request, res: Response) {
-  UserModel(database);
   let { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).send({ error: "Missing username or password" });

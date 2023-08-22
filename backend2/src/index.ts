@@ -1,13 +1,20 @@
 import http from "http";
-import { API_PORT } from "./config";
+import { API_PORT, CORS_URL } from "./config";
 import express from "express";
 import bodyParser from "body-parser";
 import router from "./routes/index";
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-import { CORS_URL } from "./config";
 import sequelize from "./database";
+import User, { initUserModel } from "./models/User";
+import Book, { initBookModel } from "./models/Book";
+import Review, { initReviewModel } from "./models/Review";
 
+initUserModel(sequelize);
+initBookModel(sequelize);
+initReviewModel(sequelize);
+User.hasMany(Review, { foreignKey: "userId" }); // Define User-Review relationship
+Book.hasMany(Review, { foreignKey: "bookId" }); // Define Book-Review relationship
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -35,9 +42,6 @@ app.use((req, res, next) => {
 app.use("/", router);
 
 const server = http.createServer(app);
-// server.listen(API_PORT, () => {
-//   console.log(`API started at http://localhost:${API_PORT}`);
-// });
 
 sequelize.sync({ force: false }).then(() => {
   server.listen(API_PORT, () => {

@@ -29,7 +29,7 @@ export default function Home() {
      {
     title: "De cero al infinito. Aprende a programar en Python",
     authors: ["Author 1", "Author 2"],
-    imageLink: "http://books.google.com/books/content?id=6unYzQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+    imageLink: "http://books.google.com/books/content?id=PO14EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
   },
      {
     title: "De cero al infinito. Aprende a programar en Python",
@@ -78,7 +78,7 @@ export default function Home() {
         <h3 className="text-center">Search Result</h3>
         <div id="list-output" className="row g-2 mt-3">
           {cardsInfo.map((card, index) => (
-            <div key={index} className="col-12 col-md-6 col-lg-4 mt-4">
+            <div key={index} className="col-12 col-md-6 col-lg-4 mt-4" >
               <Card {...card} />
             </div>
           ))}

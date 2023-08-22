@@ -13,7 +13,7 @@ const Card: React.FC<CardProps> = ({ title, authors, imageLink }) => {
         src={imageLink}
         className="card-img-top mx-auto"
         alt={title}
-        style={{height: "90%" }}
+        style={{height: "40vh", width:"80%" ,maxWidth: "100%"}}
       />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>

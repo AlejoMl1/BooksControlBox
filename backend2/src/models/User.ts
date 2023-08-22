@@ -1,15 +1,15 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 export default class User extends Model {
-  public id?: number;
+  public userId?: number;
   public name!: string;
   public lastName?: string;
   public username?: string;
   public password?: string;
 }
-export const UserModel = (sequelize: Sequelize) => {
+export const initUserModel = (sequelize: Sequelize) => {
   User.init(
     {
-      id: {
+      userId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -39,5 +39,4 @@ export const UserModel = (sequelize: Sequelize) => {
       freezeTableName: true,
     }
   );
-  User.sync();
 };
