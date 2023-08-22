@@ -1,6 +1,6 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 export default class Book extends Model {
-  public bookId?: number;
+  public bookUuid?: string;
   public title?: string;
   public authors?: string;
   public thumbnail?: string;
@@ -11,10 +11,10 @@ export default class Book extends Model {
 export const initBookModel = (sequelize: Sequelize) => {
   Book.init(
     {
-      bookId: {
-        type: DataTypes.INTEGER,
+      bookUuid: {
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       title: {
         type: DataTypes.STRING,

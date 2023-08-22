@@ -1,6 +1,6 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 export default class User extends Model {
-  public userId?: number;
+  public userUuid?: string;
   public name!: string;
   public lastName?: string;
   public username?: string;
@@ -9,10 +9,10 @@ export default class User extends Model {
 export const initUserModel = (sequelize: Sequelize) => {
   User.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
+      userUuid: {
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       name: {
         type: DataTypes.STRING,

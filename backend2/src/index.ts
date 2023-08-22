@@ -13,8 +13,8 @@ import Review, { initReviewModel } from "./models/Review";
 initUserModel(sequelize);
 initBookModel(sequelize);
 initReviewModel(sequelize);
-User.hasMany(Review, { foreignKey: "userId" }); // Define User-Review relationship
-Book.hasMany(Review, { foreignKey: "bookId" }); // Define Book-Review relationship
+User.hasMany(Review, { foreignKey: "userUuid" }); // Define User-Review relationship
+Book.hasMany(Review, { foreignKey: "bookUuid" }); // Define Book-Review relationship
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -43,7 +43,7 @@ app.use("/", router);
 
 const server = http.createServer(app);
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   server.listen(API_PORT, () => {
     console.log(`API started at http://localhost:${API_PORT}`);
   });

@@ -1,23 +1,25 @@
 import { Router, Request, Response } from "express";
 import User from "../models/User";
-import sequelize from "../database";
 
 const router = Router();
-const database = sequelize;
+
 router.post("/signup", async function (req: Request, res: Response) {
   let { name, lastName, username, password } = req.body;
   if (!username || !password || !name || !lastName) {
     return res.status(400).send({ error: "Missing field" });
   }
   try {
-    await User.create({
+    const newUser = await User.create({
       name,
       lastName,
       username,
       password,
     });
 
-    return res.status(201).send({ msg: "User created successfully" });
+    return res.status(201).send({
+      data: { userUuid: newUser.userUuid },
+      msg: "User created successfully",
+    });
   } catch (err: any) {
     console.log("Error in user post:", err.errors[0].message);
     if (err.errors[0].message === "username must be unique") {
@@ -40,10 +42,10 @@ router.post("/login", async function (req: Request, res: Response) {
     userData
       ? res.status(200).send({
           data: {
+            userUuid: userData.dataValues.userUuid,
             name: userData.dataValues.name,
             lastName: userData.dataValues.lastName,
           },
-          msg: "Credentials Match",
         })
       : res.status(401).send({ msg: "Username or password doesn't match" });
   } catch (err) {

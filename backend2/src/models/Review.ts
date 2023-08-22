@@ -3,7 +3,7 @@ import User from "./User"; // Import the User model
 import Book from "./Book"; // Import the Book model
 
 export default class Review extends Model {
-  public id!: number;
+  public reviewUuid!: string;
   public userId!: number;
   public bookId!: number;
   public rating!: number;
@@ -13,17 +13,17 @@ export default class Review extends Model {
 export const initReviewModel = (sequelize: Sequelize): void => {
   Review.init(
     {
-      id: {
-        type: DataTypes.INTEGER,
+      reviewUuid: {
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
-      userId: {
-        type: DataTypes.INTEGER,
+      userUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      bookId: {
-        type: DataTypes.INTEGER,
+      bookUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       rating: {
@@ -46,6 +46,6 @@ export const initReviewModel = (sequelize: Sequelize): void => {
     }
   );
 
-  Review.belongsTo(User, { foreignKey: "userId" }); // Define User-Review association
-  Review.belongsTo(Book, { foreignKey: "bookId" }); // Define Book-Review association
+  Review.belongsTo(User, { foreignKey: "userUuid" }); // Define User-Review association
+  Review.belongsTo(Book, { foreignKey: "bookUuid" }); // Define Book-Review association
 };
