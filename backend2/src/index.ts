@@ -43,7 +43,7 @@ app.use("/", router);
 
 const server = http.createServer(app);
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   server.listen(API_PORT, () => {
     console.log(`API started at http://localhost:${API_PORT}`);
   });

@@ -1,24 +1,33 @@
 import axios from "axios";
 import { Router, Request, Response } from "express";
 import { GOOGLE_API_KEY } from "../config";
-const router = Router();
+import Book from "../models/Book";
 
+const router = Router();
 const filterJsonData = (inputObj: any) => {
   const transformedDataArray = [];
   for (const element of inputObj.items) {
-    const authorsArray = element.volumeInfo.authors || []; // If authors is undefined, set an empty array
+    const authorsArray = element.volumeInfo.authors || [];
     const concatenatedAuthors = authorsArray.join(", ");
-    const transformedData = {
-      title: element.volumeInfo.title || "",
-      authors: concatenatedAuthors,
-      thumbnail: element.volumeInfo.imageLinks?.thumbnail || "",
-      sthumbnail: element.volumeInfo.imageLinks?.smallthumbnail || "",
-      description: element.volumeInfo.description || "",
-      pageCount: element.volumeInfo.pageCount || 0,
-      language: element.volumeInfo.language || "",
-      //   searchInfo: element.searchInfo.textSnippet || "",
-    };
-    transformedDataArray.push(transformedData);
+    const description = element.volumeInfo.description || "";
+
+    if (concatenatedAuthors !== "" && description !== "") {
+      // Check if authors and description are not empty
+      const thumbnail = element.volumeInfo.imageLinks?.thumbnail || "";
+
+      if (thumbnail !== "") {
+        // Check if thumbnail is not empty
+        const transformedData = {
+          title: element.volumeInfo.title || "",
+          authors: concatenatedAuthors,
+          thumbnail: thumbnail,
+          description: description,
+          pageCount: element.volumeInfo.pageCount || 0,
+          language: element.volumeInfo.language || "",
+        };
+        transformedDataArray.push(transformedData);
+      }
+    }
   }
   return transformedDataArray;
 };
@@ -31,7 +40,10 @@ router.get("/", async function (_req: Request, res: Response) {
     "thelordoftherings",
     "sci",
     "algebra",
-    "science",
+    "flower",
+    "dogstraining",
+    "space",
+    "nasa",
   ];
   let url_google_books = "";
   let cleanJson = [];
@@ -43,8 +55,10 @@ router.get("/", async function (_req: Request, res: Response) {
       let cleanData = filterJsonData(response.data);
       cleanJson.push(cleanData);
     }
-    const flattenedJson = cleanJson.flat();
-    return res.status(200).send({ data: flattenedJson });
+    const cleanBookData: Array<object> | any = cleanJson.flat();
+    const createdBooks = await Book.bulkCreate(cleanBookData);
+    console.log("created books:", createdBooks);
+    return res.status(200).send({ data: cleanBookData });
   } catch (error) {
     console.log("error in list:", error);
   }
