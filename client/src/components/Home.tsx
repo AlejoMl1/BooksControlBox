@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import "./Home.css";
 import axios from "axios";
-import Card from "./Card";
-import BookDetailsModal from "./Modal"; // Import the BookDetailsModal component
-import { useSelector } from 'react-redux';
+import Card from "./Card"; // Import the BookDetailsWithReviews component
+import { useSelector ,useDispatch} from 'react-redux';
 import { RootState } from "../redux/store";
 import { URL_GET_SEARCH_BY_TITLE } from "../assets/constants";
+import { setBookUuid } from "../redux/booksSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.user.username);
   const catalog = useSelector((state: RootState) => state.books.catalog);
+  const actualBookUuid = useSelector((state: RootState) => state.books.actualBookUuid);
   const [search, setSearch] = useState("");
   const [filteredCatalog, setFilteredCatalog] = useState(catalog);
-  const [selectedBookUuid, setSelectedBookUuid] = useState(null);
+
 
   const searchBook = async (search: string) => {
     if (search === "") {
@@ -21,6 +25,11 @@ export default function Home() {
       const response = await axios.get(`${URL_GET_SEARCH_BY_TITLE}${search}`);
       setFilteredCatalog(response.data.data);
     }
+  };
+
+  const handleClickedBook = (bookUuid:any)=> {
+        dispatch(setBookUuid(bookUuid));
+      navigate("/bookDetails");
   };
 
   return (
@@ -56,25 +65,18 @@ export default function Home() {
               {search ? "Search Result" : "Catalog"}
             </h3>
             <div id="list-output" className="row g-2 mt-3">
-              {filteredCatalog.map((card, index) => (
+              {filteredCatalog.map((book) => (
                 <div
-                  key={card.bookUuid}
+                  key={book.bookUuid}
                   className="col-12 col-md-6 col-lg-4 mt-4"
-                  onClick={() => setSelectedBookUuid(card.bookUuid)}
+                  onClick={()=>handleClickedBook(book.bookUuid) }
                   style={{ cursor: "pointer" }}
                 >
-                  <Card {...card} />
+                  <Card {...book} />
                 </div>
               ))}
             </div>
           </div>
-          {/* Add BookDetailsModal component */}
-          {selectedBookUuid && (
-            <BookDetailsModal
-              book={filteredCatalog.find((card) => card.bookUuid === selectedBookUuid)}
-              onClose={() => setSelectedBookUuid(null)}
-            />
-          )}
         </>
       ) : (
         <>
