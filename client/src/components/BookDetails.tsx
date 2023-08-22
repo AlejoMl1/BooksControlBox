@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { URL_ADD_REVIEW, URL_GET_REVIEWS } from "../assets/constants";
+import CardReview from "./CardReview";
 import axios from "axios";
 
 interface Review {
@@ -28,6 +29,7 @@ export default function BookDetails() {
     (state: RootState) => state.books.actualBookUuid
   );
   const catalog = useSelector((state: RootState) => state.books.catalog);
+  const userUuid = useSelector((state: RootState) => state.user.userUuid);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [bookData, setBookData] = useState<Book>({
@@ -41,7 +43,27 @@ export default function BookDetails() {
     reviews: [],
   });
   const [bookReviews, setBookReviews] = useState<Review[]>([]);
+  const averageRating = () => {
+    if (bookReviews.length === 0) {
+      return 0;
+    }
+    const sum = bookReviews.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.rating,
+      0
+    );
+    const average = sum / bookReviews.length;
 
+    return average;
+  };
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`${URL_GET_REVIEWS}${actualBookUuid}`);
+      console.log("response in bookdetail for getReview", response);
+      setBookReviews(response.data.data); // Assuming the response.data is an array of reviews
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
   useEffect(() => {
     // Find the book in the catalog based on actualBookUuid
     const foundBook = catalog.find((book) => book.bookUuid === actualBookUuid);
@@ -50,22 +72,25 @@ export default function BookDetails() {
     if (foundBook) {
       setBookData(foundBook);
     }
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(`${URL_GET_REVIEWS}${actualBookUuid}`);
-        setBookReviews(response.data.data); // Assuming the response.data is an array of reviews
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      }
-    };
+
+    console.log("bookReviews", bookReviews);
     fetchReviews();
   }, [actualBookUuid, catalog]);
 
-  const handleSubmitReview = async () => {};
+  const handleSubmitReview = async () => {
+    const requestBody = {
+      userUuid,
+      bookUuid: actualBookUuid,
+      rating,
+      reviewText,
+    };
+    await axios.post(URL_ADD_REVIEW, requestBody);
+    fetchReviews();
+  };
 
   return (
-    <div className="container bg-light">
-      <div className="row mt-5">
+    <div className="container ">
+      <div className="row mt-5 bg-light">
         <div className="col-4">
           <img
             src={bookData.thumbnail}
@@ -103,7 +128,72 @@ export default function BookDetails() {
           </div>
         </div>
       </div>
-      <div className="row mt-5 bg-primary">hi</div>
+      <div className="row mt-5">
+        <div className="col-4">
+          <h3>Reviews:</h3>
+          <div className="row">
+            <h5 className="col mt-3" style={{ color: "rgb(35, 35, 89)" }}>
+              Average Review:{" "}
+              <span style={{ color: "red" }}>{averageRating()}</span>
+            </h5>
+          </div>
+        </div>
+
+        <div className="col ">
+          {bookReviews.length > 0 ? (
+            bookReviews.map((review) => (
+              <CardReview
+                key={review.reviewUuid}
+                comment={review.reviewText}
+                rating={review.rating}
+              />
+            ))
+          ) : (
+            <div className="col-12 text-info mx-auto text-center">
+              <h4 className="text-info mx-auto">
+                This book doesn't have any reviews , be the first one to post!
+              </h4>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="row mt-3 ">
+        <div className="col-8">
+          <h5 className="my-4">Post your review:</h5>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Your review..."
+            style={{ height: "10vh" }}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+          />
+        </div>
+        <div className="col-2">
+          <h5 className="my-4">Choose your rating:</h5>
+          <form>
+            <select
+              className="form-select"
+              value={rating}
+              onChange={(e) => setRating(parseInt(e.target.value))}
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      <div className="row mt-3">
+        <div className="col text-center my-5">
+          <button onClick={handleSubmitReview} className="btn btn-primary">
+            Send Review
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

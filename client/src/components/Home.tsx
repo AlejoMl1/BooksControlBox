@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import "./Home.css";
 import axios from "axios";
 import Card from "./Card"; // Import the BookDetailsWithReviews component
-import { useSelector ,useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { URL_GET_SEARCH_BY_TITLE } from "../assets/constants";
 import { setBookUuid } from "../redux/booksSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.user.username);
   const catalog = useSelector((state: RootState) => state.books.catalog);
-  const actualBookUuid = useSelector((state: RootState) => state.books.actualBookUuid);
+
   const [search, setSearch] = useState("");
   const [filteredCatalog, setFilteredCatalog] = useState(catalog);
-
 
   const searchBook = async (search: string) => {
     if (search === "") {
@@ -27,9 +26,9 @@ export default function Home() {
     }
   };
 
-  const handleClickedBook = (bookUuid:any)=> {
-        dispatch(setBookUuid(bookUuid));
-      navigate("/bookDetails");
+  const handleClickedBook = (bookUuid: any) => {
+    dispatch(setBookUuid(bookUuid));
+    navigate("/bookDetails");
   };
 
   return (
@@ -69,8 +68,7 @@ export default function Home() {
                 <div
                   key={book.bookUuid}
                   className="col-12 col-md-6 col-lg-4 mt-4"
-                  onClick={()=>handleClickedBook(book.bookUuid) }
-                  style={{ cursor: "pointer" }}
+                  onClick={() => handleClickedBook(book.bookUuid)}
                 >
                   <Card {...book} />
                 </div>
