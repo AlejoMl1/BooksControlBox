@@ -42,7 +42,7 @@ export default function Home() {
                   id="search-box"
                   type="text"
                   className="form-control"
-                  placeholder="Search Books!..."
+                  placeholder="Search Books by title,author or category "
                   value={search}
                   onChange={(event) => {
                     setSearch(event.target.value);

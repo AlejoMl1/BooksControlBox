@@ -1,15 +1,18 @@
-const { DataTypes } = require("sequelize");
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
-module.exports = (sequelize: any) => {
-  // defino el modelo
-  sequelize.define(
-    "User",
+import { Model, Sequelize, DataTypes } from "sequelize";
+export default class User extends Model {
+  public userUuid?: string;
+  public name!: string;
+  public lastName?: string;
+  public username?: string;
+  public password?: string;
+}
+export const initUserModel = (sequelize: Sequelize) => {
+  User.init(
     {
-      id: {
-        type: DataTypes.INTEGER,
+      userUuid: {
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       name: {
         type: DataTypes.STRING,
@@ -31,6 +34,7 @@ module.exports = (sequelize: any) => {
       },
     },
     {
+      sequelize,
       timestamps: false,
       freezeTableName: true,
     }

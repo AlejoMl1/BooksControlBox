@@ -1,14 +1,12 @@
-const { Router } = require("express");
-const axios = require("axios");
-const user = require("./user.js");
-const { User } = require("../db");
-require("dotenv").config();
+import { Router } from "express";
+import userRoutes from "./userRoutes";
+import bookRoutes from "./bookRoutes";
+import reviewRoutes from "./reviewRoutes";
 
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 const router = Router();
 
-router.use("/user", user);
+router.use("/user", userRoutes);
+router.use("/book", bookRoutes);
+router.use("/review", reviewRoutes);
 
-export default router;
-// module.exports = router;
+export = router;

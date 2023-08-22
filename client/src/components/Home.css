@@ -1,13 +1,9 @@
-/* .container {
-    background-image: url('../images/homeBackground.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    min-height: 93vh;
-    min-width: 99vw;
-    
+.main-card:hover {
+    transform: scale(1.15);
+    transition: 0.2s;
 }
 
-.search-box{
-    width: 30vw;
-} */
+.main-card{
+    border-color: rgb(81, 61, 214);
+    color: rgb(79, 135, 181);
+}

@@ -1,14 +1,14 @@
-import axios,{AxiosError} from "axios";
-import React, { useState ,useEffect } from "react";
-import { URL_POST_USER_SIGNUP } from "../assets/constants";
+import axios, { AxiosError } from "axios";
+import React, { useState, useEffect } from "react";
+import { URL_POST_USER_SIGNUP, URL_GET_BOOKS } from "../assets/constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUserCredentials } from "../redux/userSlice";
 import { loadCatalog } from "../redux/booksSlice";
-import  { URL_GET_BOOKS} from "../assets/constants"
+
 import "./SignUp.css";
 const SignUP = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -18,13 +18,12 @@ const SignUP = () => {
         console.log("Fetched books", fetchedBooks);
         dispatch(loadCatalog(fetchedBooks));
       } catch (error) {
-         console.log(error);
-         throw error;
+        console.log(error);
+        throw error;
       }
     };
     fetchData();
-  },[dispatch]);
-
+  }, [dispatch]);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -33,11 +32,11 @@ const SignUP = () => {
     lastName: "",
   });
 
-
-
   const [usernameExistsError, setUsernameExistsError] = useState(false);
 
-  const handleInputChange = (event:React.ChangeEvent<HTMLInputElement>):void => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -45,19 +44,22 @@ const SignUP = () => {
     }));
     setUsernameExistsError(false); // Reset the error when input changes
   };
-  const isButtonDisabled :boolean=
+  const isButtonDisabled: boolean =
     formData.username === "" ||
     formData.password === "" ||
     formData.name === "" ||
     formData.lastName === "";
-  const handleSubmit = async (event:React.FormEvent):Promise< void> => {
+  const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
     try {
       const response = await axios.post(URL_POST_USER_SIGNUP, formData);
-       const userCredentials = { userUuid:response.data.data.userUuid, username:response.data.data.username};
+      const userCredentials = {
+        userUuid: response.data.data.userUuid,
+        username: response.data.data.username,
+      };
       dispatch(addUserCredentials(userCredentials));
       navigate("/home");
-    } catch (error:AxiosError|any) {
+    } catch (error: AxiosError | any) {
       if (error.response.status === 400) {
         setUsernameExistsError(true);
       }

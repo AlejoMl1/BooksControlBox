@@ -7,6 +7,7 @@ export default class Book extends Model {
   public description?: string;
   public pageCount?: number;
   public language?: string;
+  public category?: string;
 }
 export const initBookModel = (sequelize: Sequelize) => {
   Book.init(
@@ -37,6 +38,10 @@ export const initBookModel = (sequelize: Sequelize) => {
         allowNull: false,
       },
       language: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      category: {
         type: DataTypes.STRING,
         allowNull: false,
       },

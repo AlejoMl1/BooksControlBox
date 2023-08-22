@@ -22,6 +22,7 @@ interface Book {
   pageCount: number;
   language: string;
   reviews: Review[];
+  category: string;
 }
 
 export default function BookDetails() {
@@ -41,6 +42,7 @@ export default function BookDetails() {
     pageCount: 0,
     language: "",
     reviews: [],
+    category: "",
   });
   const [bookReviews, setBookReviews] = useState<Review[]>([]);
   const averageRating = () => {
@@ -59,6 +61,7 @@ export default function BookDetails() {
     try {
       const response = await axios.get(`${URL_GET_REVIEWS}${actualBookUuid}`);
       console.log("response in bookdetail for getReview", response);
+
       setBookReviews(response.data.data); // Assuming the response.data is an array of reviews
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -84,6 +87,7 @@ export default function BookDetails() {
       rating,
       reviewText,
     };
+
     await axios.post(URL_ADD_REVIEW, requestBody);
     fetchReviews();
   };
@@ -99,12 +103,14 @@ export default function BookDetails() {
           ></img>
           <div className="row mt-3">
             <div className="col-4">
+              <h6>Category:</h6>
               <h6>Page Numbers:</h6>
               <h6>Language:</h6>
             </div>
-            <div className="col-4 offset-3">
+            <div className="col-4 offset-2">
+              <p className="p-0 m-0">{bookData.category}</p>
               <p className="p-0 m-0">{bookData.pageCount}</p>
-              <p>{bookData.language}</p>
+              <p className="p-0 m-0">{bookData.language}</p>
             </div>
           </div>
         </div>
@@ -134,7 +140,7 @@ export default function BookDetails() {
           <div className="row">
             <h5 className="col mt-3" style={{ color: "rgb(35, 35, 89)" }}>
               Average Review:{" "}
-              <span style={{ color: "red" }}>{averageRating()}</span>
+              <span style={{ color: "red" }}>{averageRating().toFixed(1)}</span>
             </h5>
           </div>
         </div>

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { URL_POST_USER_LOGIN } from "../assets/constants";
+import React, { useState, useEffect } from "react";
+import { URL_POST_USER_LOGIN, URL_GET_BOOKS } from "../assets/constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUserCredentials } from "../redux/userSlice";
+import { loadCatalog } from "../redux/booksSlice";
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,12 +26,30 @@ const Login = () => {
     setLoginError(false);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(URL_GET_BOOKS);
+        const fetchedBooks = response.data.data;
+        console.log("Fetched books", fetchedBooks);
+        dispatch(loadCatalog(fetchedBooks));
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response= await axios.post(URL_POST_USER_LOGIN, formData);
-      console.log("response",response);
-      const userCredentials = { userUuid:response.data.data.userUuid, username:response.data.data.username};
+      const response = await axios.post(URL_POST_USER_LOGIN, formData);
+      console.log("response", response);
+      const userCredentials = {
+        userUuid: response.data.data.userUuid,
+        username: response.data.data.username,
+      };
       dispatch(addUserCredentials(userCredentials));
       navigate("/home");
     } catch (error) {
@@ -72,7 +92,9 @@ const Login = () => {
               className={`form-control ${loginError ? "is-invalid" : ""}`}
             />
             {loginError && (
-              <div className="invalid-feedback">Please check your credentials</div>
+              <div className="invalid-feedback">
+                Please check your credentials
+              </div>
             )}
           </div>
           <button className="btn btn-primary mt-3" type="submit">

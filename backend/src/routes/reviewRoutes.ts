@@ -59,8 +59,6 @@ router.get("/", async function (req: Request, res: Response) {
 router.get("/byBook", async function (req: Request, res: Response) {
   try {
     const { bookUuid } = req.query;
-    console.log(bookUuid);
-    console.log("entre acaaa");
     // Check if the provided bookUuid is valid
     const book = await Book.findOne({
       where: {
