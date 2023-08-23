@@ -6,6 +6,12 @@ const DATABASE_URL = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${PORT}/
 const objectSequelize = {
   logging: false,
   native: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 };
 //*both ways works the connection
 // export default new Sequelize({

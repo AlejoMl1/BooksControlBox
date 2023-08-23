@@ -52,7 +52,7 @@ app.use(morgan("dev"));
 app.use((req, res, next) => {
     // update to match the domain you will make the request from
     //!this will have to change in deployment to match the frontend domain
-    res.header("Access-Control-Allow-Origin", config_1.CORS_URL);
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
     //configure the type of headers the backend is going to accept
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -64,8 +64,8 @@ app.use((req, res, next) => {
 app.use("/", index_1.default);
 const server = http_1.default.createServer(app);
 database_1.default.sync({ force: false }).then(() => {
-    server.listen(config_1.DB_PORT, () => {
-        console.log(`API started at port:${config_1.DB_PORT}`);
+    server.listen(config_1.PORT, () => {
+        console.log(`API started at port:${config_1.PORT}`);
     });
 });
 //# sourceMappingURL=index.js.map
