@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({ title, authors, thumbnail, category }) => {
         src={thumbnail}
         className="card-img-top mx-auto "
         alt={title}
-        style={{ height: "30vh", width: "86%", maxWidth: "100%" }}
+        style={{ height: "33vh", width: "86%", maxWidth: "100%" }}
       />
       <div className="card-body p-1 mt-3" style={{ overflowY: "hidden" }}>
         <h6 className="card-title">{title}</h6>
