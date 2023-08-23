@@ -1,5 +1,5 @@
 import http from "http";
-import { API_PORT, CORS_URL } from "./config";
+import { DB_PORT, CORS_URL } from "./config";
 import express from "express";
 import bodyParser from "body-parser";
 import router from "./routes/index";
@@ -43,7 +43,7 @@ app.use("/", router);
 const server = http.createServer(app);
 
 sequelize.sync({ force: false }).then(() => {
-  server.listen(API_PORT, () => {
-    console.log(`API started at http://localhost:${API_PORT}`);
+  server.listen(DB_PORT, () => {
+    console.log(`API started at port:${DB_PORT}`);
   });
 });

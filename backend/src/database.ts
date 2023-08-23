@@ -2,7 +2,7 @@ import { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } from "./config";
 import { Sequelize } from "sequelize";
 
 const DATABASE_URL = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
-
+console.log("database url", DATABASE_URL);
 const objectSequelize = {
   logging: false,
   native: false,
