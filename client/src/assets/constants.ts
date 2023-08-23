@@ -1,4 +1,6 @@
-const BASE_URL = "http://localhost:3001";
+// const BASE_URL = "http://localhost:3001";
+const BASE_URL =
+  "postgresql://postgres:3FNg7CYYyLFfNwQnz95s@containers-us-west-203.railway.app:7566/railway";
 
 export const URL_GET_BOOKS = `${BASE_URL}/book`;
 export const URL_POST_USER_SIGNUP = `${BASE_URL}/user/signup`;
