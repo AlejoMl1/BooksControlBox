@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use((req, res, next) => {
   // update to match the domain you will make the request from
   //!this will have to change in deployment to match the frontend domain
-  res.header("Access-Control-Allow-Origin", CORS_URL);
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", "true");
   //configure the type of headers the backend is going to accept
   res.header(
