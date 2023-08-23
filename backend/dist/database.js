@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("./config");
 const sequelize_1 = require("sequelize");
 const DATABASE_URL = `postgresql://${config_1.DB_USER}:${config_1.DB_PASSWORD}@${config_1.DB_HOST}:${config_1.DB_PORT}/${config_1.DB_NAME}`;
+console.log("database url", DATABASE_URL);
 const objectSequelize = {
     logging: false,
     native: false,

@@ -64,8 +64,8 @@ app.use((req, res, next) => {
 app.use("/", index_1.default);
 const server = http_1.default.createServer(app);
 database_1.default.sync({ force: false }).then(() => {
-    server.listen(config_1.API_PORT, () => {
-        console.log(`API started at http://localhost:${config_1.API_PORT}`);
+    server.listen(config_1.DB_PORT, () => {
+        console.log(`API started at port:${config_1.DB_PORT}`);
     });
 });
 //# sourceMappingURL=index.js.map
